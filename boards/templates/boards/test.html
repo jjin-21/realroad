@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>TEST</h1>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">날짜</th>
+                <th scope="col">시간</th>
+                <th scope="col">팀</th>
+                <th scope="col">-</th>
+                <th scope="col">팀</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in game_ls %}
+            <tr>
+                {% for info in game %}
+                    <td>{{ info }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
