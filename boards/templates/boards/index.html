@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    a:hover {
+        color: blue; /* 마우스를 올렸을 때 파란색으로 변경 */
+    }
+</style>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">제목</th>
+                <th scope="col">닉네임</th>
+                <th scope="col">작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in boards %}
+            <tr>
+                <th scope="row">{{ board.pk }}</th>
+                <td><a href="{% url "boards:detail" board.pk %}">{{ board.title }}</a></td>
+                <th scope="row">{{ board.user.nickname }}</th>
+                <td>{{ board.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

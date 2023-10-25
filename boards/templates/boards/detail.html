@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    div > img{
+        width: 600px;
+        height: 400px;
+    }
+
+    .content_control{
+        display: flex;
+        gap: 5px;
+    }
+</style>
+
+<h1>{{ board.title }}</h1>
+<p>{{ board.content }}</p>
+<div>
+    {% if board.image %}
+    <img src="{{board.image.url}}" alt="게시물 이미지">
+    {% endif %}
+</div>
+<hr>
+<h5>댓글 작성</h5>
+{% if user.is_authenticated %}
+    <form action="{% url "boards:create_comment" board.pk %}" method='POST'>
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="작성">
+    </form>
+{% else %}
+    <p>로그인 작성해주세요.</p>
+{% endif %}
+<hr>
+{% if comments %}
+    <h5>댓글 목록</h5>
+    <ul>
+        {% for comment in comments %}
+            <li>{{comment.user.nickname}} - {{comment.content}}</li>
+            {% if user.pk == comment.user.pk %}
+                <form action="{% url "boards:update_comment" board.pk comment.pk %}"method='POST'>
+                    {% csrf_token %}
+                    {{ comment_form }}
+                    <input type="submit" value="수정">
+                </form>
+
+                <form action="{% url "boards:delete_comment" board.pk comment.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제">
+                </form>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>작성된 댓글이 없습니다.</p>
+{% endif %}
+<hr>
+{% if user.is_authenticated and user.pk == board.user.pk%}
+    <div class='content_control'>
+        <a class="btn btn-primary" href="{% url "boards:update" board.pk %}">게시글 수정</a>
+        <form action="{% url "boards:delete" board.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">게시글 삭제</button>
+        </form>
+    </div>
+<hr>
+{% endif %}
+<a class="btn btn-secondary" href="{% url "boards:index" %}">목록</a>
+{% endblock content %}

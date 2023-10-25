@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{% url "boards:create" %}" method='POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">게시글 생성</button>
+</form>
+{% endblock content %}

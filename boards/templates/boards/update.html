@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{% url "boards:update" board.pk %}" method='POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class='btn btn-primary' type="submit" onclick="return confirm('정말로 수정하시겠습니까?')">게시글 수정</button>
+</form>
+{% endblock content %}

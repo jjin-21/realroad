@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    a {
+        margin-top: 5px;
+    }
+</style>
+
+<h1>회원정보수정</h1>
+<form action="{% url "accounts:update" user.pk %}" method='POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <hr>
+    <button class='btn btn-primary' type="submit">회원정보수정</button>
+</form>
+<a class='btn btn-primary' href={% url "change_password" user.pk %} type="button">비밀번호 변경</a>
+{% endblock content %}
