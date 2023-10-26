@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>TEST</h1>
+<h3>경기 정보</h3>
 <div>
     <table class="table">
         <thead>
@@ -9,18 +9,69 @@
                 <th scope="col">날짜</th>
                 <th scope="col">시간</th>
                 <th scope="col">팀</th>
-                <th scope="col">-</th>
+                <th scope="col">승무패</th>
                 <th scope="col">팀</th>
+                <th scope="col">상대전적</th>
             </tr>
         </thead>
         <tbody>
-            {% for game in game_ls %}
+            {% for match in match_ls %}
             <tr>
-                {% for info in game %}
+                {% for info in match|slice:":3" %}
                     <td>{{ info }}</td>
                 {% endfor %}
+                    <td>
+                        <button type="button" class="btn btn-outline-dark">Dark</button>
+                        <button type="button" class="btn btn-outline-dark">Dark</button>
+                        <button type="button" class="btn btn-outline-dark">Dark</button>
+                    </td>
+                {% for info in match|slice:"4:" %}
+                    <td>{{ info }}</td>
+                {% endfor %}
+                    <td>
+                        <button type="button" class="btn btn-outline-dark">상대전적</button>
+                    </td>
             </tr>
             {% endfor %}
+        </tbody>
+    </table>
+</div>
+<hr>
+<h3>순위</h3>
+<div>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th scope="col">순위</th>
+                <th scope="col">Team</th>
+                <th scope="col"></th>
+                <th scope="col">경기 수</th>
+                <th scope="col">승</th>
+                <th scope="col">무</th>
+                <th scope="col">패</th>
+                <th scope="col">골 득-실</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for ranks in rank_info %}
+                <tr>
+                    {% for rank in ranks|slice:":1" %}
+                        <td>{{rank}}</td>
+                    {% endfor %}
+                    
+                    {% for rank in ranks|slice:"1:2" %}
+                        <td>
+                            <img src="{{rank}}" alt="logo">
+                        </td>
+                    {% endfor %}
+
+                    {% for rank in ranks|slice:"2:" %}
+                        <td>{{rank}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            
         </tbody>
     </table>
 </div>

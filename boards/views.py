@@ -111,20 +111,38 @@ def test(request):
     if response.status_code == 200:
         # BeautifulSoup을 사용하여 HTML 파싱
         soup = bs(response.text, 'html.parser')
-        games = soup.find(class_='standard_tabelle').select("tr")
-        game_ls = []
-        for game in games:
-            game_info = game.find_all(class_='hell')
+        game_info = list(soup.find_all(class_='standard_tabelle'))
+        matches = game_info[0].select("tr")
+        match_ls = []
+        for match in matches:
+            match_info = match.select('td')
             tmp = []
-            for info in game_info:
+            for info in match_info:
                 if info.text:
                     tmp.append(info.text)
+                    if len(tmp) == 5:
+                        break
                 else:
                     tmp.append('-')
-                if len(tmp) == 5:
-                    break
-            game_ls.append(tmp)
+                
+            match_ls.append(tmp)
+        
+        ranks = game_info[1].select("tr")
+        rank_info = []
+        for rank in ranks[1:]:
+            rank_tmp = rank.select('td')
+            tmp = [rank_tmp[0].text,
+                    rank_tmp[1].find('img').get('src'),
+                    rank_tmp[2].text,
+                    rank_tmp[3].text,
+                    rank_tmp[4].text,
+                    rank_tmp[5].text,
+                    rank_tmp[6].text,
+                    rank_tmp[7].text,
+                    ]
+            rank_info.append(tmp)
     context = {
-        'game_ls': game_ls,
+        'match_ls': match_ls,
+        'rank_info': rank_info,
     }
     return render(request, 'boards/test.html', context)
